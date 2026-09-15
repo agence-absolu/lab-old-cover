@@ -1,0 +1,84 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  font-weight: 900;
+  font-style: normal;
+  overflow: hidden;
+}
+
+/* Grain animé par-dessus tout (canvas redessiné à 30 FPS, voir main.js) */
+.noise {
+  background-color: #fff;
+  height: 100vh;
+  left: 0;
+  min-width: 100%;
+  pointer-events: none;
+  opacity: 0.1;
+  position: fixed;
+  z-index: 999;
+}
+
+.fullscreen {
+  align-items: center;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  overflow: hidden;
+  position: absolute;
+}
+
+.fullscreen video {
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+  will-change: transform;
+}
+
+h1 {
+  font-family: 'Archivo Black', 'Arial Black', sans-serif;
+  font-size: 300vw;
+  line-height: 0.8;
+  margin: 0;
+  position: absolute;
+  text-align: center;
+  text-transform: uppercase;
+  will-change: transform;
+}
+
+.dark h1 {
+  color: red;
+}
+
+/* Découpés en caractères (inline-block), les mots pourraient se casser en
+   colonnes : on les garde d'un seul tenant, chacun sur sa ligne */
+h1 .words {
+  white-space: nowrap;
+}
+
+/* Le millésime plus gros que le titre */
+h1 .words:last-child {
+  font-size: 1.8em;
+}
+
+/* Fond noir, lettres rouges : en mode « darken » la vidéo ne subsiste que
+   dans les lettres, teintée de rouge. En fin d'animation on plonge dans le 9
+   jusqu'à ce que son rouge recouvre toute l'image (voir main.js). */
+.dark {
+  background: #000;
+}
+
+.blendVideo {
+  transform: scale(2);
+  mix-blend-mode: darken;
+}
+
+/* Masqué jusqu'à l'initialisation de GSAP (évite le flash sans style) */
+.effect {
+  visibility: hidden;
+}

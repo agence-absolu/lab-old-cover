@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Old cover — Lab Absolu</title>
+    <meta name="description" content="Une démo de plus dans l’univers du Lab Absolu." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <div class="effect">
+      <div class="fullscreen dark">
+        <h1>Détour 1945</h1>
+        <!--
+          Extrait de « Detour » (Edgar G. Ulmer, 1945), film noir tombé dans le
+          domaine public aux États-Unis. Copie : archive.org/details/Detour_66
+        -->
+        <video
+          class="blendVideo"
+          src="/src/assets/detour.mp4"
+          muted
+          autoplay
+          playsinline
+          preload="auto"
+        ></video>
+      </div>
+    </div>
+    <canvas id="noise" class="noise"></canvas>
+  </body>
+</html>
