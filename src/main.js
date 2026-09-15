@@ -51,19 +51,30 @@ function init() {
 
   GSDevTools.create({ animation: tl });
 
-  // Lance la vidéo et l'animation ensemble ; un clic rejoue le tout.
-  function play() {
-    video.currentTime = 0;
-    video.play().catch(() => {}); // lecture auto refusée : l'animation joue quand même
-    tl.restart();
-  }
+  // La vidéo est asservie à la timeline : lecture, pause, position et vitesse
+  // suivent GSAP à chaque tick, pour que GSDevTools (scrub, pause, timeScale)
+  // la pilote aussi.
+  gsap.ticker.add(() => {
+    const t = Math.min(tl.time(), video.duration || 0);
+    const playing = tl.isActive() && !tl.paused();
+    if (playing) {
+      if (video.paused) video.play().catch(() => {}); // lecture auto refusée : tant pis
+      if (Math.abs(video.currentTime - t) > 0.3) video.currentTime = t; // resynchro après un saut
+      const rate = gsap.utils.clamp(0.0625, 16, tl.timeScale());
+      if (video.playbackRate !== rate) video.playbackRate = rate;
+    } else {
+      if (!video.paused) video.pause();
+      if (Math.abs(video.currentTime - t) > 0.05) video.currentTime = t; // scrub
+    }
+  });
 
-  if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) play();
-  else video.addEventListener('canplay', play, { once: true });
+  // Démarre dès que la vidéo peut jouer ; un clic rejoue le tout.
+  if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) tl.play();
+  else video.addEventListener('canplay', () => tl.play(), { once: true });
 
   document.addEventListener('click', (e) => {
     if (e.target.closest('.gs-dev-tools')) return; // clic dans la barre GSDevTools
-    play();
+    tl.restart();
   });
 }
 
